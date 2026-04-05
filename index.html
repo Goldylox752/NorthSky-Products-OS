@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NorthSky Drones</title>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background:#0f172a;
+  color:#f8fafc;
+}
+
+/* HEADER */
+header {
+  background:#1e293b;
+  padding:1rem;
+  text-align:center;
+}
+
+header h1 { font-size:2rem; }
+header p { font-size:0.9rem; color:#94a3b8; }
+
+/* TRUST BAR */
+.trust {
+  text-align:center;
+  padding:10px;
+  font-size:0.9rem;
+}
+
+/* BANNER */
+.banner img {
+  width:100%;
+  max-width:900px;
+  display:block;
+  margin:20px auto;
+  border-radius:8px;
+}
+
+/* PRODUCTS */
+#drone-gallery {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:20px;
+  padding:20px;
+}
+
+.drone-card {
+  background:#1e293b;
+  border-radius:10px;
+  width:260px;
+  padding:15px;
+  text-align:center;
+  transition:0.2s;
+}
+
+.drone-card:hover {
+  transform:translateY(-5px);
+}
+
+.drone-card img {
+  width:100%;
+  border-radius:6px;
+  margin-bottom:10px;
+}
+
+.price {
+  color:#22c55e;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+button {
+  background:#38bdf8;
+  border:none;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+  width:100%;
+}
+
+/* TRACKING */
+#track {
+  text-align:center;
+  padding:30px;
+}
+
+#track input {
+  padding:8px;
+  width:200px;
+}
+
+#track-results {
+  margin-top:20px;
+}
+
+/* FOOTER */
+footer {
+  text-align:center;
+  padding:20px;
+  background:#1e293b;
+  margin-top:30px;
+}
+</style>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+const supabase = supabase.createClient(
+  "YOUR_SUPABASE_URL",
+  "YOUR_SUPABASE_ANON_KEY"
+);
+</script>
+
+</head>
+<body>
+
+<header>
+  <h1>🚁 NorthSky Drones</h1>
+  <p>Premium Drones for Canada</p>
+</header>
+
+<div class="trust">
+  🇨🇦 Canada-Wide Shipping | 📦 Tracked Delivery | 🔒 Secure Checkout
+</div>
+
+<section class="banner">
+  <img src="images/banner.jpg" onerror="this.src='https://via.placeholder.com/900x400'">
+</section>
+
+<section>
+  <h2 style="text-align:center;">Top Drones</h2>
+  <div id="drone-gallery"></div>
+</section>
+
+<section id="track">
+  <h2>Track Your Order</h2>
+  <input id="tracking-id" placeholder="Tracking ID">
+  <button onclick="trackDrone()">Track</button>
+  <div id="track-results"></div>
+</section>
+
+<footer>
+  © 2026 NorthSky Drones
+</footer>
+
+<script>
+
+/* PRODUCT DATA (REAL STORE STRUCTURE) */
+const drones = [
+  {
+    name: "SkyMaster X1",
+    image: "skymasterx1.jpg",
+    price: "$899 CAD",
+    desc: "4K Camera • 30min Flight • GPS Auto Return"
+  },
+  {
+    name: "AeroFlyer 3000",
+    image: "aeroflyer3000.jpg",
+    price: "$699 CAD",
+    desc: "HD Camera • Beginner Friendly • Foldable"
+  },
+  {
+    name: "CloudRider Pro",
+    image: "cloudriderpro.jpg",
+    price: "$1299 CAD",
+    desc: "Obstacle Avoidance • Long Range • Pro Grade"
+  }
+];
+
+/* RENDER PRODUCTS */
+const gallery = document.getElementById("drone-gallery");
+
+drones.forEach(drone => {
+  const card = document.createElement("div");
+  card.className = "drone-card";
+
+  card.innerHTML = `
+    <img src="images/${drone.image}" onerror="this.src='https://via.placeholder.com/300'">
+    <h3>${drone.name}</h3>
+    <p>${drone.desc}</p>
+    <p class="price">${drone.price}</p>
+    <button onclick="buyNow('${drone.name}')">Buy Now</button>
+  `;
+
+  gallery.appendChild(card);
+});
+
+/* STRIPE / CHECKOUT */
+function buyNow(name) {
+  alert("Redirecting to secure checkout...");
+  window.location.href = "https://buy.stripe.com/YOUR_LINK";
+}
+
+/* TRACKING */
+async function trackDrone() {
+  const id = document.getElementById("tracking-id").value;
+  const results = document.getElementById("track-results");
+
+  results.innerHTML = "Checking...";
+
+  const { data } = await supabase
+    .from("drone_tracking")
+    .select("*")
+    .eq("tracking_id", id);
+
+  if (!data || data.length === 0) {
+    results.innerHTML = "No order found.";
+    return;
+  }
+
+  results.innerHTML = `
+    <p>Status: ${data[0].status}</p>
+    <p>Updated: ${new Date(data[0].last_updated).toLocaleString()}</p>
+  `;
+}
+
+</script>
+
+</body>
+</html>
