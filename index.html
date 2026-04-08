@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NorthSky | Official Store</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,Arial;
+  background:#0b1220;
+  color:#fff;
+}
+.container{max-width:520px;margin:0 auto;}
+
+header{
+  text-align:center;
+  padding:14px;
+  background:#0f172a;
+  border-bottom:1px solid #1f2937;
+}
+
+.sale{
+  background:#22c55e;
+  padding:10px;
+  text-align:center;
+  font-weight:600;
+  font-size:13px;
+}
+
+.hero{
+  padding:20px;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.hero p{
+  color:#9ca3af;
+  font-size:14px;
+}
+
+button{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  border:none;
+  padding:15px;
+  width:100%;
+  border-radius:12px;
+  font-weight:bold;
+  margin-top:14px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.trust{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  padding:12px;
+  color:#9ca3af;
+}
+
+.section{padding:15px;}
+
+.card{
+  margin-bottom:16px;
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+  background:#000;
+}
+
+.card video,.card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+
+.overlay{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  padding:14px;
+  background:linear-gradient(to top,rgba(0,0,0,0.95),transparent);
+}
+
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#22c55e;
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:6px;
+  font-weight:bold;
+}
+
+.proof{
+  font-size:14px;
+  color:#d1d5db;
+}
+
+.review{
+  background:#111827;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.cta-note{
+  font-size:12px;
+  color:#9ca3af;
+  text-align:center;
+  margin-top:8px;
+}
+
+.sticky{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  max-width:520px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000;
+  padding:10px;
+  display:none;
+  z-index:999;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<h2>NORTHSKY</h2>
+<p style="font-size:12px;color:#aaa;">AERIAL SYSTEMS</p>
+</header>
+
+<div class="sale">🔥 FREE SHIPPING • LIMITED STOCK REMAINING</div>
+
+<!-- HERO -->
+<section class="hero">
+<h1>I Thought This Drone Was Fake…</h1>
+<p>Until we tested it ourselves 👇</p>
+
+<button onclick="buy('pro')">🚀 Get NorthSky Pro Now</button>
+<p class="cta-note">✔ 30-Day Guarantee • Secure Checkout • Free Shipping</p>
+
+<div class="trust">
+<span>🚚 Fast Shipping</span>
+<span>🔒 Secure Checkout</span>
+<span>⭐ 4.8 Rating</span>
+</div>
+</section>
+
+<!-- MAIN VIDEO -->
+<div class="section">
+<div class="card">
+<div class="badge">🔥 Viral</div>
+<video autoplay muted loop playsinline>
+<source src="https://cdn.coverr.co/videos/coverr-flying-over-mountains-1570/1080p.mp4">
+</video>
+
+<div class="overlay">
+<h3>This Doesn’t Look Like a $899 Drone…</h3>
+<button onclick="buy('pro')">🔥 Get Yours Before It Sells Out</button>
+</div>
+</div>
+</div>
+
+<!-- BELIEF BREAKER -->
+<div class="section proof">
+<h3>Wait… is this actually legit?</h3>
+<p>We thought the same thing.</p>
+<p>So we ordered one and tested it ourselves.</p>
+<p><strong>This is the real footage ↓</strong></p>
+</div>
+
+<!-- SECOND VIDEO -->
+<div class="section">
+<div class="card">
+<video autoplay muted loop playsinline>
+<source src="https://cdn.coverr.co/videos/coverr-aerial-view-of-road-1560/1080p.mp4">
+</video>
+
+<div class="overlay">
+<h3>No Filters. No Tricks.</h3>
+<button onclick="buy('pro')">See It Yourself →</button>
+</div>
+</div>
+</div>
+
+<!-- PRICE ANCHOR -->
+<div class="section proof">
+<h3>Why Not $2000+?</h3>
+<p>💰 Comparable drones cost $1500–$2500</p>
+<p>📦 We sell direct (no retail markup)</p>
+<p>⚡ Limited promotional pricing</p>
+</div>
+
+<!-- COMPARISON -->
+<div class="section proof">
+<h3>How It Compares</h3>
+<p>✔ 4K Footage</p>
+<p>✔ Auto Stabilization</p>
+<p>✔ Beginner Friendly</p>
+<p>✔ No Expensive Extras Needed</p>
+</div>
+
+<!-- CTA -->
+<div class="section">
+<button onclick="buy('pro')">🔥 Claim Your Drone Now</button>
+<p class="cta-note">Selling fast — don’t miss out</p>
+</div>
+
+<!-- REVIEWS -->
+<div class="section">
+<h3>⭐ Real Customers</h3>
+
+<div class="review">
+"Thought this was a scam… it’s actually legit."
+</div>
+
+<div class="review">
+"Did NOT expect this quality at this price."
+</div>
+
+<div class="review">
+"Super easy to fly. First drone and I love it."
+</div>
+</div>
+
+<!-- GUARANTEE -->
+<div class="section proof">
+<h3>🛡️ Risk-Free</h3>
+<p>30-Day Money Back Guarantee</p>
+<p>Try it. If you don’t love it, send it back.</p>
+</div>
+
+</div>
+
+<div class="sticky" id="sticky">
+<button onclick="buy('pro')">🔥 Get Yours Now</button>
+</div>
+
+<script>
+const links={
+pro:"https://buy.stripe.com/9B6eV64qDcT20xpeDC2ZO0i"
+};
+
+function buy(p){
+window.location.href=links[p];
+}
+
+window.addEventListener("scroll",()=>{
+if(window.scrollY>120){
+document.getElementById("sticky").style.display="block";
+}
+});
+</script>
+
+</body>
+</html>
