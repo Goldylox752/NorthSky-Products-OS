@@ -39,20 +39,9 @@ font-size:14px;
 }
 
 /* HERO */
-.hero{
-padding:20px;
-text-align:center;
-}
-
-.hero h1{
-font-size:24px;
-margin-bottom:8px;
-}
-
-.hero p{
-color:#9ca3af;
-font-size:14px;
-}
+.hero{padding:20px;text-align:center;}
+.hero h1{font-size:24px;margin-bottom:8px;}
+.hero p{color:#9ca3af;font-size:14px;}
 
 button{
 background:linear-gradient(135deg,#22c55e,#16a34a);
@@ -76,9 +65,7 @@ color:#9ca3af;
 }
 
 /* FEED */
-.feed{
-padding:15px;
-}
+.feed{padding:15px;}
 
 .card{
 margin-bottom:15px;
@@ -96,6 +83,45 @@ object-fit:cover;
 display:block;
 }
 
+/* UGC ELEMENTS */
+.watermark{
+position:absolute;
+top:10px;
+left:10px;
+font-size:11px;
+background:rgba(0,0,0,0.6);
+padding:4px 8px;
+border-radius:6px;
+}
+
+.comment{
+position:absolute;
+right:10px;
+background:rgba(0,0,0,0.7);
+padding:6px 10px;
+border-radius:20px;
+font-size:12px;
+}
+.comment:nth-child(2){bottom:120px;}
+.comment:nth-child(3){bottom:90px;}
+.comment:nth-child(4){bottom:60px;}
+
+/* BEFORE AFTER */
+.compare{display:flex;height:260px;}
+.compare img{width:50%;object-fit:cover;}
+.before{filter:blur(2px) brightness(0.7);}
+.after{position:relative;}
+.label{
+position:absolute;
+bottom:8px;
+left:8px;
+font-size:11px;
+background:#000;
+padding:3px 6px;
+border-radius:6px;
+}
+
+/* OVERLAY */
 .overlay{
 position:absolute;
 bottom:0;
@@ -126,7 +152,6 @@ border-radius:8px;
 margin-bottom:6px;
 }
 
-/* ⭐ NEW: rating */
 .rating{
 font-size:12px;
 color:#facc15;
@@ -191,11 +216,9 @@ display:none;
 
 <div class="sale" id="saleBar">🔥 FREE SHIPPING • SELLING FAST</div>
 
-<!-- HERO -->
 <section class="hero">
 <h1>4K Drone Footage Without Paying $2000+</h1>
 <p id="geoText">Trusted by creators worldwide</p>
-
 <button onclick="buy('pro')">🔥 Get NorthSky Pro Now</button>
 
 <div class="trust">
@@ -205,26 +228,40 @@ display:none;
 </div>
 </section>
 
-<!-- FEED -->
+<!-- 🔥 UGC FEED -->
 <section class="feed">
 
 <div class="card">
-<video muted loop playsinline preload="metadata">
+<div class="watermark">Shot on NorthSky</div>
+
+<video autoplay muted loop playsinline preload="none">
 <source src="https://cdn.coverr.co/videos/coverr-flying-over-mountains-1570/1080p.mp4">
 </video>
+
+<div class="comment">😳 this is insane</div>
+<div class="comment">how much??</div>
+<div class="comment">looks like DJI</div>
+
 <div class="overlay">
 <h3>NorthSky Pro 🔥</h3>
-<p>“Looks like DJI footage…”</p>
 <button onclick="buy('pro')">Buy Now – $899</button>
 </div>
 </div>
 
 <div class="card">
-<img src="https://images.pexels.com/photos/442587/pexels-photo-442587.jpeg?auto=compress&cs=tinysrgb&w=800" loading="lazy">
+<div class="watermark">Shot on NorthSky</div>
+
+<div class="compare">
+<img class="before" src="https://images.pexels.com/photos/210182/pexels-photo-210182.jpeg?auto=compress&cs=tinysrgb&w=800" referrerpolicy="no-referrer">
+<div class="after">
+<img src="https://images.pexels.com/photos/442587/pexels-photo-442587.jpeg?auto=compress&cs=tinysrgb&w=800" referrerpolicy="no-referrer">
+<div class="label">AFTER</div>
+</div>
+</div>
+
 <div class="overlay">
-<h3>NorthSky Max</h3>
-<p>Long range cinematic shots</p>
-<button onclick="buy('max')">View – $1099</button>
+<h3>Upgrade Your Footage</h3>
+<button onclick="buy('pro')">Upgrade Now</button>
 </div>
 </div>
 
@@ -234,45 +271,19 @@ display:none;
 <section class="products">
 
 <div class="product">
-<img src="https://images.pexels.com/photos/724921/pexels-photo-724921.jpeg?auto=compress&cs=tinysrgb&w=800" loading="lazy">
+<img src="https://images.pexels.com/photos/724921/pexels-photo-724921.jpeg?auto=compress&cs=tinysrgb&w=800" referrerpolicy="no-referrer">
 <div class="rating">⭐⭐⭐⭐⭐ (1,284)</div>
 <h4>Lite</h4>
 <strong>$599</strong>
-<div class="inventory" id="inv1">Only 18 left</div>
 <button onclick="buy('lite')">Buy</button>
 </div>
 
 <div class="product">
-<img src="https://images.pexels.com/photos/442587/pexels-photo-442587.jpeg?auto=compress&cs=tinysrgb&w=800" loading="lazy">
+<img src="https://images.pexels.com/photos/442587/pexels-photo-442587.jpeg?auto=compress&cs=tinysrgb&w=800" referrerpolicy="no-referrer">
 <div class="rating">⭐⭐⭐⭐⭐ (3,912)</div>
 <h4>Pro 🔥</h4>
 <strong>$899</strong>
-<div class="inventory" id="inv2">Only 12 left</div>
 <button onclick="buy('pro')">Best Seller</button>
-</div>
-
-<div class="product">
-<img src="https://images.pexels.com/photos/336232/pexels-photo-336232.jpeg?auto=compress&cs=tinysrgb&w=800" loading="lazy">
-<div class="rating">⭐⭐⭐⭐⭐ (892)</div>
-<h4>Max</h4>
-<strong>$1099</strong>
-<button onclick="buy('max')">Buy</button>
-</div>
-
-<div class="product">
-<img src="https://images.pexels.com/photos/210182/pexels-photo-210182.jpeg?auto=compress&cs=tinysrgb&w=800" loading="lazy">
-<div class="rating">⭐⭐⭐⭐⭐ (540)</div>
-<h4>X</h4>
-<strong>$1299</strong>
-<button onclick="buy('x')">Buy</button>
-</div>
-
-<div class="product featured">
-<img src="https://images.pexels.com/photos/724921/pexels-photo-724921.jpeg?auto=compress&cs=tinysrgb&w=800">
-<h4>🔥 Creator Bundle</h4>
-<p>Drone + Accessories • Save $400</p>
-<strong>$1299</strong>
-<button onclick="buy('pro')">Best Value</button>
 </div>
 
 </section>
@@ -293,17 +304,13 @@ display:none;
 
 </div>
 
-<!-- STICKY -->
 <div class="sticky" id="sticky">
 <button onclick="buy('pro')">🔥 Buy Now</button>
 </div>
 
-<!-- POPUP -->
 <div class="popup" id="popup"></div>
 
 <script>
-
-/* LINKS */
 const links={
 lite:"https://buy.stripe.com/dRm5kw4qDbOYa7Z3YY2ZO0h",
 pro:"https://buy.stripe.com/9B6eV64qDcT20xpeDC2ZO0i",
@@ -312,63 +319,31 @@ x:"https://buy.stripe.com/00w9AM7CP6uE93Vanm2ZO0f"
 };
 
 function buy(p){
-window.open(links[p],"_blank");
+window.location.href=links[p];
 }
 
-/* GEO (SAFE FALLBACK) */
-let userCountry="your area";
-
+/* GEO SAFE */
 fetch("https://ipapi.co/json/")
-.then(res=>res.json())
-.then(data=>{
-if(data.country_name){
-userCountry=data.country_name;
-
-document.getElementById("saleBar").innerText=
-`🔥 FREE SHIPPING TO ${userCountry} • SELLING FAST`;
-
-document.getElementById("geoText").innerText=
-`🔥 Trending now in ${userCountry}`;
-
-document.getElementById("shipping").innerText=
-`🚚 2–5 Day Shipping (${userCountry})`;
+.then(r=>r.json())
+.then(d=>{
+if(d.country_name){
+saleBar.innerText=`🔥 FREE SHIPPING TO ${d.country_name}`;
+geoText.innerText=`🔥 Trending in ${d.country_name}`;
+shipping.innerText=`🚚 2–5 Day Shipping (${d.country_name})`;
 }
 }).catch(()=>{});
 
-/* AUTOPLAY */
-const vids=document.querySelectorAll("video");
-const obs=new IntersectionObserver(entries=>{
-entries.forEach(e=>{
-if(e.isIntersecting){e.target.play();}
-else{e.target.pause();}
-});
-},{threshold:0.5});
-vids.forEach(v=>obs.observe(v));
-
 /* STICKY */
 window.addEventListener("scroll",()=>{
-if(window.scrollY>250){
-document.getElementById("sticky").style.display="block";
-}
+if(window.scrollY>250) sticky.style.display="block";
 });
 
 /* POPUPS */
 setInterval(()=>{
-const msgs=[
-`Someone in ${userCountry} bought a Pro 🔥`,
-`${userCountry} order just placed`,
-`Only a few left in ${userCountry}`,
-`High demand in ${userCountry}`
-];
-
-const p=document.getElementById("popup");
-p.innerText=msgs[Math.floor(Math.random()*msgs.length)];
-p.style.display="block";
-
-setTimeout(()=>p.style.display="none",3000);
-
+popup.innerText="Someone just bought a NorthSky Pro 🔥";
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",3000);
 },7000);
-
 </script>
 
 </body>
