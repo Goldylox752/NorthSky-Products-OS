@@ -12,7 +12,7 @@ body {
   font-family: Arial, sans-serif;
   background:#0f172a;
   color:#f8fafc;
-  padding-bottom:80px; /* FIX overlap */
+  padding-bottom:90px;
 }
 
 /* HEADER */
@@ -144,7 +144,7 @@ button:hover {
   color:#cbd5f5;
 }
 
-/* STICKY BAR */
+/* STICKY BAR FIXED */
 .sticky-buy {
   position:fixed;
   bottom:0;
@@ -154,7 +154,11 @@ button:hover {
   text-align:center;
   border-top:1px solid #333;
   backdrop-filter: blur(10px);
+
   opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
   transition:0.3s;
   z-index:999;
 }
@@ -199,7 +203,6 @@ footer {
 🔥 FREE SHIPPING ACROSS CANADA 🇨🇦 — LIMITED STOCK
 </div>
 
-<!-- HERO -->
 <section class="hero">
 
   <h2>Capture Cinematic Aerial Footage — Effortlessly</h2>
@@ -225,7 +228,7 @@ footer {
     <span class="price-big">$899 CAD</span>
   </p>
 
-  <button onclick="buyNow('SkyMaster X1')">
+  <button id="mainBuyBtn" onclick="buyNow('SkyMaster X1')">
     🚀 Buy Now — Free Shipping
   </button>
 
@@ -237,24 +240,20 @@ footer {
 
 </section>
 
-<!-- REVIEWS -->
 <section class="reviews">
   ⭐⭐⭐⭐⭐ “Battery lasts longer than expected and footage is super stable.” – Daniel R., Edmonton
 </section>
 
-<!-- INCLUDED -->
 <section class="reviews">
   <h3>📦 What's Included</h3>
   <p>Drone • Controller • 2 Batteries • Charger • Manual</p>
 </section>
 
-<!-- PRODUCTS -->
 <section>
   <h2 style="text-align:center;">More Drones</h2>
   <div id="drone-gallery"></div>
 </section>
 
-<!-- TRUST -->
 <section class="trust">
   <p>🇨🇦 Canadian-Based Store</p>
   <p>📦 Ships in 3–7 Days</p>
@@ -262,7 +261,6 @@ footer {
   <p>↩️ 30-Day Money Back Guarantee</p>
 </section>
 
-<!-- FAQ -->
 <section class="faq">
   <h3>❓ FAQ</h3>
   <p><b>Shipping?</b><br>3–7 business days.</p>
@@ -274,7 +272,6 @@ footer {
   © 2026 NorthSky Drones
 </footer>
 
-<!-- STICKY BUY -->
 <div class="sticky-buy">
   <button onclick="buyNow('SkyMaster X1')">
     🚀 Buy Now — $899 CAD
@@ -289,10 +286,17 @@ const checkoutLinks = {
 
 function buyNow(name) {
   const url = checkoutLinks[name];
-  if (url) window.location.href = url;
+  if (!url) {
+    alert("Product not available");
+    return;
+  }
+
+  // optional tracking
+  console.log("User clicked buy:", name);
+
+  window.location.href = url;
 }
 
-/* PRODUCTS */
 document.addEventListener("DOMContentLoaded", function () {
 
   const drones = [
@@ -325,13 +329,23 @@ document.addEventListener("DOMContentLoaded", function () {
     gallery.appendChild(card);
   });
 
-  /* STICKY SCROLL */
+  /* STICKY FIXED TRIGGER */
   const sticky = document.querySelector(".sticky-buy");
+  const trigger = document.getElementById("mainBuyBtn");
+
   window.addEventListener("scroll", () => {
-    sticky.style.opacity = window.scrollY > 400 ? "1" : "0";
+    if (window.scrollY > trigger.offsetTop + 200) {
+      sticky.style.opacity = "1";
+      sticky.style.visibility = "visible";
+      sticky.style.pointerEvents = "auto";
+    } else {
+      sticky.style.opacity = "0";
+      sticky.style.visibility = "hidden";
+      sticky.style.pointerEvents = "none";
+    }
   });
 
-  /* LIVE SALES POPUP */
+  /* LIVE POPUP */
   setInterval(() => {
     const names = ["Mike", "Sarah", "Chris", "Alex"];
     const cities = ["Toronto", "Calgary", "Vancouver", "Edmonton"];
