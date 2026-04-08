@@ -31,8 +31,9 @@ header img { height:50px; margin-bottom:10px; }
 .features { text-align:left; max-width:320px; margin:15px auto; }
 .price-big { font-size:2rem; color:#22c55e; font-weight:bold; }
 
+/* BUTTON */
 button {
-  background:#22c55e;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
   padding:14px;
   border:none;
   border-radius:8px;
@@ -40,6 +41,7 @@ button {
   width:100%;
   max-width:320px;
   font-weight:bold;
+  transition:0.2s;
 }
 button:hover { transform:scale(1.05); }
 
@@ -47,22 +49,21 @@ button:hover { transform:scale(1.05); }
 .badges { display:flex; justify-content:center; gap:10px; font-size:0.8rem; margin-top:10px; }
 
 /* COUNTDOWN */
-.timer {
-  margin-top:10px;
-  color:#f87171;
-  font-weight:bold;
-}
+.timer { margin-top:10px; color:#f87171; font-weight:bold; }
 
 /* STOCK */
-.stock {
-  margin-top:5px;
-  color:#f87171;
-  font-weight:bold;
-}
+.stock { margin-top:5px; color:#f87171; font-weight:bold; }
 
 /* PRODUCTS */
 #drone-gallery { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px; }
-.drone-card { background:#1e293b; padding:15px; border-radius:10px; width:260px; }
+.drone-card {
+  background:#1e293b;
+  padding:15px;
+  border-radius:10px;
+  width:260px;
+  transition:0.2s;
+}
+.drone-card:hover { transform:translateY(-5px); }
 .drone-card img { width:100%; border-radius:6px; }
 
 /* UPSELL */
@@ -84,6 +85,7 @@ button:hover { transform:scale(1.05); }
   text-align:center;
   transform:translateY(100%);
   transition:0.3s;
+  box-shadow:0 -5px 20px rgba(0,0,0,0.5);
 }
 .sticky-buy.show { transform:translateY(0); }
 
@@ -96,6 +98,9 @@ button:hover { transform:scale(1.05); }
   padding:10px;
   border-radius:6px;
   font-size:0.8rem;
+  opacity:0;
+  transform:translateY(10px);
+  transition:0.3s;
 }
 
 /* FOOTER */
@@ -119,7 +124,7 @@ footer { text-align:center; padding:20px; background:#1e293b; font-size:0.8rem; 
 
 <h2>Capture Cinematic Aerial Footage — Effortlessly</h2>
 
-<img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e">
+<img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80">
 
 <p>Professional drone performance without the learning curve.</p>
 
@@ -150,14 +155,12 @@ footer { text-align:center; padding:20px; background:#1e293b; font-size:0.8rem; 
 
 </section>
 
-<!-- UPSELL -->
 <div class="upsell">
 <h3>🔥 Bundle Deal</h3>
 <p>Add extra battery pack for longer flights</p>
 <button onclick="buyNow('SkyMaster X1')">Add Bundle</button>
 </div>
 
-<!-- PRODUCTS -->
 <section>
 <h2 style="text-align:center;">More Drones</h2>
 <div id="drone-gallery"></div>
@@ -180,9 +183,10 @@ function buyNow(name){
 window.location.href = checkoutLinks[name];
 }
 
-/* COUNTDOWN */
+/* COUNTDOWN (LOOP RESET) */
 let time = 900;
 setInterval(()=>{
+if(time <= 0) time = 900;
 let m=Math.floor(time/60);
 let s=time%60;
 document.getElementById("timer").innerText =
@@ -190,15 +194,23 @@ document.getElementById("timer").innerText =
 time--;
 },1000);
 
-/* STOCK */
-let stock = Math.floor(Math.random()*5)+3;
+/* STOCK (DECAY EFFECT) */
+let stock = Math.floor(Math.random()*5)+5;
 document.getElementById("stock").innerText =
 "⚠️ Only "+stock+" left in stock";
+
+setInterval(()=>{
+if(stock > 2){
+stock--;
+document.getElementById("stock").innerText =
+"⚠️ Only "+stock+" left in stock";
+}
+},15000);
 
 /* PRODUCTS */
 const drones=[{
 name:"AeroFlyer 3000",
-image:"https://images.unsplash.com/photo-1473968512647-3e447244af8f",
+image:"https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=800&q=80",
 price:699,
 oldPrice:999
 }];
@@ -214,32 +226,41 @@ gallery.innerHTML+=`
 </div>`;
 });
 
-/* STICKY */
+/* STICKY (PERFECT FIX) */
 const sticky=document.getElementById("sticky");
 const trigger=document.getElementById("mainBuyBtn");
 
-window.addEventListener("scroll",()=>{
-if(trigger.getBoundingClientRect().bottom<0){
+function toggleSticky(){
+const rect = trigger.getBoundingClientRect();
+
+if(rect.bottom < 0){
 sticky.classList.add("show");
 }else{
 sticky.classList.remove("show");
 }
-});
+}
 
-/* POPUP */
+window.addEventListener("scroll", toggleSticky);
+window.addEventListener("load", toggleSticky);
+
+/* POPUP (SMOOTH + NON-SPAMMY) */
 setInterval(()=>{
 const names=["Mike","Sarah","Chris","Alex"];
 const cities=["Toronto","Calgary","Vancouver","Edmonton"];
 
 const p=document.createElement("div");
 p.className="popup";
+
 p.innerHTML="🛒 "+names[Math.floor(Math.random()*4)]+" from "+
 cities[Math.floor(Math.random()*4)]+" bought one";
 
 document.body.appendChild(p);
+
+setTimeout(()=>{p.style.opacity="1"; p.style.transform="translateY(0)";},50);
+setTimeout(()=>{p.style.opacity="0"; p.style.transform="translateY(10px)";},3500);
 setTimeout(()=>p.remove(),4000);
 
-},10000);
+},12000);
 </script>
 
 </body>
