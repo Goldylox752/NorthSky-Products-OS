@@ -7,7 +7,7 @@ app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      "whsec_YOUR_SECRET"
+      "whsec_NSMLwS5SWFgCK3unNbFJIFrvF270L7Sr"
     );
   } catch (err) {
     return res.sendStatus(400);
