@@ -1,70 +1,100 @@
 <script>
+/* ================= SUPABASE INIT ================= */
 const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
 const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
 
 let supabase = null;
 
-try {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} catch (e) {
-  console.log("Supabase init failed");
+function initSupabase(){
+  try {
+    if (window.supabase && SUPABASE_URL && SUPABASE_KEY) {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+  } catch (e) {
+    console.log("Supabase init failed");
+  }
 }
 
+initSupabase();
+
+/* ================= TRACKING ================= */
 async function track(event){
+  if (!supabase) return;
+
   try {
-    if (!supabase) return;
-    await supabase.from('events').insert([{ event, time: new Date() }]);
+    await supabase.from("events").insert([
+      {
+        event,
+        time: new Date().toISOString()
+      }
+    ]);
   } catch (e) {
     console.log("Track error");
   }
 }
 
-// EMAIL POPUP
+/* ================= UI HELPERS ================= */
+function $(id){
+  return document.getElementById(id);
+}
+
+function setCTA(text){
+  document.querySelectorAll(".main-cta").forEach(btn=>{
+    btn.innerText = text;
+  });
+}
+
+/* ================= EMAIL POPUP ================= */
 function showPopup(){
-  if(localStorage.getItem("emailCaptured")) return;
+  if (localStorage.getItem("emailCaptured")) return;
 
   setTimeout(()=>{
-    const el = document.getElementById("emailPopup");
-    if(el) el.style.display = "block";
+    const popup = $("emailPopup");
+    if (popup) popup.style.display = "block";
   }, 4000);
 }
 
 function closePopup(){
-  document.getElementById("emailPopup").style.display="none";
+  const popup = $("emailPopup");
+  if (popup) popup.style.display = "none";
 }
 
+/* ================= EMAIL SUBMIT ================= */
 async function submitEmail(){
-  const email = document.getElementById("emailInput").value;
+  const input = $("emailInput");
+  const email = input ? input.value.trim() : "";
 
-  if(!email || !email.includes("@")){
+  if (!email.includes("@")){
     alert("Enter a valid email");
     return;
   }
 
-  localStorage.setItem("emailCaptured","true");
+  localStorage.setItem("emailCaptured", "true");
 
   await track("email_capture");
 
   try {
     if (supabase) {
-      await supabase.from('leads').insert([{ email }]);
+      await supabase.from("leads").insert([
+        { email, created_at: new Date().toISOString() }
+      ]);
     }
-  } catch(e){}
+  } catch (e) {
+    console.log("Lead save error");
+  }
 
-  document.querySelectorAll(".main-cta").forEach(btn=>{
-    btn.innerText = "🔥 Get Drone – $899";
-  });
+  setCTA("🔥 Get Drone – $899 (Discount Active)");
 
   alert("✅ Discount unlocked!");
   closePopup();
 }
 
+/* ================= INIT ON LOAD ================= */
 window.onload = () => {
-  if(localStorage.getItem("emailCaptured")){
-    document.querySelectorAll(".main-cta").forEach(btn=>{
-      btn.innerText = "🔥 Get Drone – $899";
-    });
+  if (localStorage.getItem("emailCaptured")) {
+    setCTA("🔥 Get Drone – $899");
   }
+
   showPopup();
 };
 </script>
