@@ -3,19 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NorthSky | Skymaster X1</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>NorthSky | Skymaster X1 Drone</title>
 
 <style>
 :root{
   --bg:#020617;
   --card:rgba(255,255,255,0.04);
   --border:rgba(255,255,255,0.08);
-  --text:#fff;
+  --text:#ffffff;
   --muted:rgba(255,255,255,0.65);
   --accent:#38bdf8;
-  --green:#22c55e;
 }
 
 *{
@@ -57,7 +54,6 @@ body{
 
 .hero h1{
   font-size:28px;
-  margin-top:10px;
 }
 
 .hero p{
@@ -87,9 +83,10 @@ body{
 
 /* PRICE */
 .price{
-  font-size:26px;
+  font-size:28px;
   font-weight:700;
   margin-top:6px;
+  color:#22c55e;
 }
 
 .old{
@@ -109,6 +106,7 @@ button{
   font-weight:700;
   cursor:pointer;
   transition:0.2s;
+  color:black;
 }
 
 button:hover{
@@ -167,7 +165,7 @@ button:hover{
 
 <div class="nav">
   <div>NorthSky</div>
-  <div>Skymaster X1</div>
+  <div>Drone Store</div>
 </div>
 
 <div class="container">
@@ -200,10 +198,9 @@ button:hover{
       4K Camera • GPS Auto Return • 25min Flight • Beginner Friendly
     </p>
 
-    <a href="https://buy.stripe.com/9B6eV64qDcT20xpeDC2ZO0i">
-      <button onclick="track('stripe_click')" class="main-cta">
-        🚀 Buy Now
-      </button>
+    <a href="https://buy.stripe.com/fZu8wI2iv5qA2Fx0MM2ZO0z"
+       onclick="track('stripe_click')">
+      <button>🚀 Buy Now</button>
     </a>
   </div>
 
@@ -211,9 +208,21 @@ button:hover{
   <div class="card">
     <h3>Why it wins</h3>
     <p style="color:var(--muted);margin-top:8px;">
-      ✔ Stable flight AI assist<br>
-      ✔ Ultra smooth 4K capture<br>
-      ✔ Auto return safety system
+      ✔ Stable AI flight assist<br>
+      ✔ Ultra smooth 4K camera<br>
+      ✔ Auto return safety system<br>
+      ✔ Beginner friendly controls
+    </p>
+  </div>
+
+  <!-- VALUE -->
+  <div class="card">
+    <h3>What you get</h3>
+    <p style="color:var(--muted);margin-top:8px;">
+      • Skymaster X1 Drone<br>
+      • Controller<br>
+      • Battery + charger<br>
+      • User guide
     </p>
   </div>
 
@@ -221,25 +230,22 @@ button:hover{
 
 <!-- STICKY CTA -->
 <div class="sticky">
-  <a href="https://buy.stripe.com/9B6eV64qDcT20xpeDC2ZO0i">
-    <button>🔥 Get Skymaster X1</button>
+  <a href="https://buy.stripe.com/fZu8wI2iv5qA2Fx0MM2ZO0z">
+    <button>🔥 Buy Skymaster X1 Now</button>
   </a>
 </div>
 
 <!-- POPUP -->
 <div id="popup" class="popup">
-  <h3>Get $5 Off</h3>
+  <h3>Get Early Access Deals</h3>
   <input id="emailInput" placeholder="Email"
     style="width:100%;padding:10px;margin-top:10px;border-radius:10px;border:none;">
   <button onclick="submitEmail()">Unlock</button>
 </div>
 
 <script>
-let supabase = null;
-
 function track(event){
-  if(!supabase) return;
-  supabase.from("events").insert([{event}]);
+  console.log("track:", event);
 }
 
 function submitEmail(){
@@ -247,14 +253,9 @@ function submitEmail(){
   if(!email.includes("@")) return alert("Invalid email");
 
   localStorage.setItem("emailCaptured","true");
-  track("email_capture");
-
-  document.querySelectorAll(".main-cta").forEach(b=>{
-    b.innerText = "🔥 Buy Now - Discount Active";
-  });
 
   document.getElementById("popup").style.display="none";
-  alert("Discount unlocked!");
+  alert("Discount unlocked (optional feature)");
 }
 
 window.onload = () => {
