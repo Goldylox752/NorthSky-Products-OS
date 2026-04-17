@@ -1,14 +1,16 @@
 <script>
-/* ================= SUPABASE INIT ================= */
+/* ================= CONFIG ================= */
 const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
 const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
 
+/* ================= INIT ================= */
 let supabase = null;
 
 function initSupabase(){
   try {
     if (window.supabase && SUPABASE_URL && SUPABASE_KEY) {
       supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      console.log("Supabase connected");
     }
   } catch (e) {
     console.log("Supabase init failed");
@@ -18,13 +20,16 @@ function initSupabase(){
 initSupabase();
 
 /* ================= TRACKING ================= */
-async function track(event){
+async function track(event, meta = {}) {
+  console.log("TRACK:", event, meta);
+
   if (!supabase) return;
 
   try {
     await supabase.from("events").insert([
       {
         event,
+        meta,
         time: new Date().toISOString()
       }
     ]);
@@ -33,14 +38,17 @@ async function track(event){
   }
 }
 
-/* ================= UI HELPERS ================= */
+/* ================= HELPERS ================= */
 function $(id){
   return document.getElementById(id);
 }
 
-function setCTA(text){
-  document.querySelectorAll(".main-cta").forEach(btn=>{
-    btn.innerText = text;
+/* ================= CTA TRACKING ================= */
+function trackCTAClicks(){
+  document.querySelectorAll("a[href*='stripe.com']").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      track("cta_click", { location: btn.innerText });
+    });
   });
 }
 
@@ -49,13 +57,13 @@ function showPopup(){
   if (localStorage.getItem("emailCaptured")) return;
 
   setTimeout(()=>{
-    const popup = $("emailPopup");
+    const popup = $("popup"); // FIXED ID
     if (popup) popup.style.display = "block";
-  }, 4000);
+  }, 3000);
 }
 
 function closePopup(){
-  const popup = $("emailPopup");
+  const popup = $("popup");
   if (popup) popup.style.display = "none";
 }
 
@@ -71,7 +79,7 @@ async function submitEmail(){
 
   localStorage.setItem("emailCaptured", "true");
 
-  await track("email_capture");
+  await track("email_capture", { email });
 
   try {
     if (supabase) {
@@ -83,18 +91,15 @@ async function submitEmail(){
     console.log("Lead save error");
   }
 
-  setCTA("🔥 Get Drone – $899 (Discount Active)");
-
-  alert("✅ Discount unlocked!");
+  alert("✅ Bonus unlocked!");
   closePopup();
 }
 
-/* ================= INIT ON LOAD ================= */
-window.onload = () => {
-  if (localStorage.getItem("emailCaptured")) {
-    setCTA("🔥 Get Drone – $899");
-  }
+/* ================= PAGE INIT ================= */
+window.addEventListener("load", () => {
+  track("page_view");
 
+  trackCTAClicks();
   showPopup();
-};
+});
 </script>
