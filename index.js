@@ -1,12 +1,19 @@
 <script>
 
-/* ================= CONFIG ================= */
+/* ================= CLIENT CONFIG ================= */
+const CLIENT_CONFIG = {
+  brand: "NorthSky Systems",
+  product: "Skymaster X1 Inspection System",
+  checkout_url: "https://buy.stripe.com/REPLACE_THIS",
+  funnel_name: "roofing_inspection_funnel"
+};
+
+/* ================= SUPABASE ================= */
 const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
 const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
 
 let supabase = null;
 
-/* ================= INIT ================= */
 function initSupabase(){
   if (window.supabase && SUPABASE_URL && SUPABASE_KEY) {
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -28,7 +35,7 @@ function getSessionId(){
 
 const SESSION_ID = getSessionId();
 
-/* ================= UTM SYSTEM ================= */
+/* ================= UTMS ================= */
 function getUTMs(){
   const p = new URLSearchParams(window.location.search);
 
@@ -40,15 +47,52 @@ function getUTMs(){
   };
 }
 
-/* ================= FUNNEL STAGES (NEW) ================= */
-function funnelStage(name, meta = {}){
-  track("funnel_stage", {
-    stage: name,
-    ...meta
-  });
+/* ================= TRACK ================= */
+async function track(event, meta = {}){
+
+  if (!supabase) return;
+
+  const payload = {
+    event,
+    meta: {
+      ...meta,
+      ...getUTMs(),
+      session_id: SESSION_ID,
+      client: CLIENT_CONFIG.brand,
+      funnel: CLIENT_CONFIG.funnel_name,
+      url: location.href,
+      referrer: document.referrer || "direct",
+      user_agent: navigator.userAgent
+    },
+    time: new Date().toISOString()
+  };
+
+  try {
+    await supabase.from("events").insert([payload]);
+  } catch (e) {
+    console.log("track error:", e.message);
+  }
 }
 
-/* ================= ROOFFLOW BRIDGE ================= */
+/* ================= FUNNEL STAGE ================= */
+function funnelStage(stage, meta = {}){
+  track("funnel_stage", { stage, ...meta });
+}
+
+/* ================= LEAD SCORE ================= */
+function updateLeadScore(points){
+
+  let score = parseInt(localStorage.getItem("lead_score") || "0");
+  score += points;
+
+  localStorage.setItem("lead_score", score);
+
+  if (score >= 50){
+    funnelStage("high_intent_lead", { score });
+  }
+}
+
+/* ================= ROOFFLOW ENTRY ================= */
 function captureFromRoofFlow(){
 
   const p = new URLSearchParams(window.location.search);
@@ -78,54 +122,14 @@ function captureFromRoofFlow(){
     utm_source,
     utm_campaign
   });
-
-  console.log("🚀 Funnel entry captured");
 }
 
-/* ================= CORE TRACKING ================= */
-async function track(event, meta = {}){
-
-  if (!supabase) return;
-
-  const payload = {
-    event,
-    meta: {
-      ...meta,
-      ...getUTMs(),
-      session_id: SESSION_ID,
-      url: location.href,
-      referrer: document.referrer || "direct",
-      user_agent: navigator.userAgent
-    },
-    time: new Date().toISOString()
-  };
-
-  try {
-    await supabase.from("events").insert([payload]);
-  } catch (e) {
-    console.log("track error:", e.message);
-  }
-}
-
-/* ================= LEAD SCORE (NEW) ================= */
-function updateLeadScore(points){
-
-  let score = parseInt(localStorage.getItem("lead_score") || "0");
-  score += points;
-
-  localStorage.setItem("lead_score", score);
-
-  if (score >= 50){
-    funnelStage("high_intent_lead", { score });
-  }
-}
-
-/* ================= CHECKOUT ================= */
+/* ================= CHECKOUT (FIXED) ================= */
 function goToCheckout(){
 
   const utm = getUTMs();
 
-  const url = new URL("https://buy.stripe.com/9B6eV64qDcT20xpeDC2ZO0i");
+  const url = new URL(CLIENT_CONFIG.checkout_url);
 
   url.searchParams.set("client_reference_id", SESSION_ID);
   url.searchParams.set("utm_source", utm.utm_source);
@@ -134,13 +138,12 @@ function goToCheckout(){
   url.searchParams.set("cpc", utm.cpc);
 
   funnelStage("checkout_click");
-
   updateLeadScore(20);
 
   window.location.href = url.toString();
 }
 
-/* ================= CTA TRACKING (UPGRADED) ================= */
+/* ================= CTA TRACKING ================= */
 function bindCTAs(){
 
   document.querySelectorAll("a").forEach(a => {
@@ -169,14 +172,10 @@ function bindCTAs(){
   });
 }
 
-/* ================= SCROLL DEPTH (UPGRADED) ================= */
+/* ================= SCROLL DEPTH ================= */
 function trackScroll(){
 
-  let checkpoints = {
-    30: false,
-    60: false,
-    90: false
-  };
+  let checkpoints = {30:false,60:false,90:false};
 
   window.addEventListener("scroll", () => {
 
@@ -204,23 +203,22 @@ function trackScroll(){
     }
 
   });
-
 }
 
-/* ================= POPUP ================= */
-function showPopup(){
+/* ================= LEAD INSERT (FIXED FUNCTION) ================= */
+async function saveLead(email){
 
-  if (localStorage.getItem("emailCaptured")) return;
+  if (!supabase) return;
 
-  setTimeout(() => {
-    const popup = document.getElementById("popup");
-
-    if (popup){
-      popup.style.display = "block";
-      funnelStage("popup_shown");
-    }
-  }, 3000);
-
+  await supabase.from("leads").insert([{
+    email,
+    session_id: SESSION_ID,
+    client: CLIENT_CONFIG.brand,
+    funnel: CLIENT_CONFIG.funnel_name,
+    source: getUTMs().utm_source,
+    lead_score: parseInt(localStorage.getItem("lead_score") || "0"),
+    created_at: new Date().toISOString()
+  }]);
 }
 
 /* ================= EMAIL ================= */
@@ -236,20 +234,10 @@ async function submitEmail(){
   localStorage.setItem("emailCaptured", "true");
 
   funnelStage("email_capture");
-
   updateLeadScore(25);
 
   await track("email_capture", { email });
-
-  if (supabase){
-    await supabase.from("leads").insert([{
-      email,
-      session_id: SESSION_ID,
-      source: getUTMs().utm_source,
-      lead_score: parseInt(localStorage.getItem("lead_score") || "0"),
-      created_at: new Date().toISOString()
-    }]);
-  }
+  await saveLead(email);
 
   alert("Access unlocked!");
   document.getElementById("popup").style.display = "none";
@@ -264,7 +252,6 @@ window.addEventListener("load", () => {
 
   bindCTAs();
   trackScroll();
-  showPopup();
 
 });
 
