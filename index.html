@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NorthSky Revenue OS | Drone Inspection + Lead Engine</title>
+<title>NorthSky Revenue OS | Funnel Intelligence System</title>
 
 <style>
 :root{
   --bg:#020617;
   --card:rgba(255,255,255,0.04);
   --border:rgba(255,255,255,0.08);
-  --text:#ffffff;
+  --text:#fff;
   --muted:rgba(255,255,255,0.65);
   --accent:#38bdf8;
   --cta:#22c55e;
@@ -21,7 +21,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"Inter",Arial;
+  font-family: -apple-system, BlinkMacSystemFont, Inter, Arial;
   background:var(--bg);
   color:var(--text);
 }
@@ -30,49 +30,41 @@ body{
 .nav{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  padding:18px 24px;
+  padding:16px 22px;
   border-bottom:1px solid var(--border);
 }
 
-.logo{
-  font-weight:800;
-  letter-spacing:0.5px;
-}
+.logo{font-weight:800;}
+.status{font-size:12px;color:var(--muted);}
 
-.status{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* CONTAINER */
+/* LAYOUT */
 .container{
-  max-width:820px;
+  max-width:860px;
   margin:auto;
-  padding:24px;
+  padding:22px;
 }
 
 /* HERO */
 .hero{
   text-align:center;
-  padding:40px 0 20px;
+  padding:36px 0 10px;
 }
 
 .hero h1{
-  font-size:42px;
+  font-size:40px;
   line-height:1.1;
 }
 
 .hero p{
+  margin-top:10px;
   color:var(--muted);
-  margin-top:12px;
-  font-size:15px;
+  font-size:14px;
   line-height:1.6;
 }
 
 .badge{
   display:inline-block;
-  margin-top:14px;
+  margin-top:12px;
   padding:6px 10px;
   border-radius:999px;
   border:1px solid rgba(56,189,248,0.3);
@@ -80,39 +72,39 @@ body{
   font-size:11px;
 }
 
-/* SCORE PANEL */
-.scoreboard{
-  display:flex;
-  justify-content:space-between;
-  margin-top:20px;
+/* SCORE */
+.panel{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+  margin-top:18px;
   padding:14px;
-  border-radius:14px;
   border:1px solid var(--border);
+  border-radius:14px;
   background:rgba(255,255,255,0.02);
 }
 
-.scorebox{
+.box{
   text-align:center;
-  flex:1;
 }
 
-.scorebox h3{
-  font-size:12px;
+.box h4{
+  font-size:11px;
   color:var(--muted);
 }
 
-.scorebox span{
+.box span{
   font-size:18px;
   font-weight:700;
 }
 
 /* CARDS */
 .card{
-  background:var(--card);
+  margin-top:14px;
+  padding:16px;
   border:1px solid var(--border);
   border-radius:16px;
-  padding:16px;
-  margin-top:14px;
+  background:var(--card);
 }
 
 /* BUTTONS */
@@ -120,41 +112,33 @@ body{
   display:block;
   width:100%;
   margin-top:12px;
-  padding:14px;
-  border:none;
+  padding:13px;
   border-radius:12px;
+  border:none;
   font-weight:700;
-  text-align:center;
-  background:var(--cta);
-  color:black;
   cursor:pointer;
+  text-align:center;
+  text-decoration:none;
 }
 
-.btn.secondary{
-  background:var(--accent);
-}
+.primary{background:var(--cta); color:#000;}
+.secondary{background:var(--accent); color:#000;}
+.danger{background:var(--danger); color:#fff;}
 
-.btn.danger{
-  background:var(--danger);
-  color:white;
-}
-
-/* LEAD STATUS */
+/* STATUS */
 .stage{
   margin-top:10px;
   font-size:13px;
   color:var(--muted);
 }
 
-/* LINKS */
 .link{
   display:block;
   margin-top:10px;
+  font-size:13px;
   color:var(--accent);
   text-decoration:none;
-  font-size:13px;
 }
-
 </style>
 </head>
 
@@ -170,74 +154,55 @@ body{
 
 <!-- HERO -->
 <div class="hero">
-  <h1>Turn Roofing Traffic Into Closed Jobs Automatically</h1>
-
+  <h1>Convert Roofing Traffic Into Revenue Automatically</h1>
   <p>
-    RoofFlow AI generates leads → Drone system captures inspections → Revenue OS tracks and converts.
+    One system: leads → scoring → routing → conversion → subscription.
   </p>
-
-  <div class="badge">Full Funnel Intelligence System</div>
+  <div class="badge">Unified Funnel Intelligence System</div>
 </div>
 
-<!-- SCORE SYSTEM -->
-<div class="scoreboard">
-  <div class="scorebox">
-    <h3>LEAD SCORE</h3>
+<!-- SCORE -->
+<div class="panel">
+  <div class="box">
+    <h4>LEAD SCORE</h4>
     <span id="score">0</span>
   </div>
 
-  <div class="scorebox">
-    <h3>STAGE</h3>
+  <div class="box">
+    <h4>STAGE</h4>
     <span id="stage">COLD</span>
   </div>
 
-  <div class="scorebox">
-    <h3>CRMV2</h3>
-    <span id="crm">SYNC</span>
+  <div class="box">
+    <h4>STATUS</h4>
+    <span id="status">LIVE</span>
   </div>
 </div>
 
-<!-- CORE FUNNEL -->
+<!-- ROOFFLOW -->
 <div class="card">
-  <h3>1. RoofFlow AI (Lead Engine)</h3>
+  <h3>1. RoofFlow AI — Lead Engine</h3>
   <p style="color:var(--muted); font-size:13px;">
-    Capture roofing leads and push them into tracking system.
+    Captures and qualifies roofing leads automatically.
   </p>
 
   <a class="btn secondary"
-     onclick="NorthSky.redirectToFunnel('https://goldylox752.github.io/RoofFlow-AI/')">
-    Open RoofFlow Funnel
-  </a>
-
-  <a class="link" href="https://goldylox752.github.io/RoofFlow-AI/" target="_blank">
-    Direct CRM Link →
+     href="https://goldylox752.github.io/RoofFlow-AI/"
+     onclick="NorthSky.track('roofflow_click')">
+     Open Lead Engine
   </a>
 </div>
 
-<!-- DRONE SYSTEM -->
+<!-- REVENUE ENGINE -->
 <div class="card">
-  <h3>2. Skymaster Drone System</h3>
-  <p style="color:var(--muted); font-size:13px;">
-    Converts leads into inspection + quoting workflow.
-  </p>
+  <h3>2. Revenue Routing Engine</h3>
 
-  <a class="btn"
-     onclick="NorthSky.track('drone_click')"
-     href="#">
-    Open Drone Workflow
-  </a>
-</div>
-
-<!-- ACTION ENGINE -->
-<div class="card">
-  <h3>3. Revenue Control Center</h3>
-
-  <p class="stage" id="statusText">
-    Tracking visitor behavior...
+  <p id="statusText" class="stage">
+    Tracking behavior...
   </p>
 
   <button class="btn danger" onclick="forcePush()">
-    Push High Intent to RoofFlow
+    Push High-Intent Leads → RoofFlow
   </button>
 </div>
 
@@ -246,28 +211,40 @@ body{
 <script src="core.js"></script>
 
 <script>
-function updateUI(){
 
-  const score = localStorage.getItem("ns_score") || 0;
+function syncUI(){
+
+  const score = parseInt(localStorage.getItem("ns_score") || 0);
+
   document.getElementById("score").innerText = score;
 
   let stage = "COLD";
-  if(score > 15) stage = "HOT";
-  else if(score > 6) stage = "WARM";
+  if(score >= 15) stage = "HOT";
+  else if(score >= 6) stage = "WARM";
 
   document.getElementById("stage").innerText = stage;
+
   document.getElementById("session").innerText =
     "Session: " + (localStorage.getItem("ns_session_id") || "--");
-}
 
-function forcePush(){
-  if(window.NorthSky){
-    NorthSky.redirectToFunnel("https://goldylox752.github.io/RoofFlow-AI/");
+  // AUTO ROUTING (REAL REVENUE LOGIC)
+  if(window.NorthSky && stage === "HOT"){
+    document.getElementById("statusText").innerText =
+      "🔥 Hot lead detected → routing to RoofFlow";
+
+    setTimeout(() => {
+      NorthSky.redirect("https://goldylox752.github.io/RoofFlow-AI/");
+    }, 1200);
   }
 }
 
-setInterval(updateUI, 1000);
-updateUI();
+function forcePush(){
+  NorthSky.redirect("https://goldylox752.github.io/RoofFlow-AI/");
+}
+
+setInterval(syncUI, 1000);
+syncUI();
+
 </script>
 
 </body>
