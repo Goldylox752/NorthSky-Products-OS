@@ -120,27 +120,33 @@ ul {
 
 <script>
 /* =========================
-   TRACKING CORE
+   SKYMASTER TRACKING CORE
 ========================= */
 function track(event, data = {}) {
+  const payload = {
+    event,
+    data,
+    url: window.location.href,
+    timestamp: Date.now(),
+    source: "skymaster_x1"
+  };
+
+  // GA4 tracking
   if (window.gtag) {
     gtag("event", event, {
       event_category: "drone_funnel",
       event_label: window.location.href,
-      ...data
     });
   }
 
-  // optional: send to your SkymasterOS backend
+  // SkymasterOS backend tracking
   fetch("/api/hot-lead", {
     method: "POST",
     headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      event,
-      url: window.location.href,
-      timestamp: Date.now()
-    })
+    body: JSON.stringify(payload)
   }).catch(() => {});
+
+  console.log("[SKYMASTER]", payload);
 }
 
 /* =========================
@@ -169,18 +175,85 @@ function go(url, event) {
     Skymaster X1 gives contractors instant 4K aerial inspections so they can quote faster, reduce risk, and close more jobs.
   </p>
 
-  <!-- BUY -->
+  <!-- BUY CTA -->
   <a class="btn primary"
      href="https://buy.stripe.com/9B6eV64qDcT20xpeDC2ZO0i"
      onclick="go(this.href,'buy_click')">
      Buy Now — $899
   </a>
 
-  <!-- APPLY -->
+  <!-- APPLY CTA -->
   <a class="btn secondary"
      href="https://northsky-flow-os.onrender.com/apply"
      onclick="go(this.href,'contractor_click')">
      Check Contractor Availability
   </a>
 
-  <p
+  <p class="small">Limited contractor rollout per region</p>
+
+</section>
+
+<!-- PROBLEM -->
+<section class="section">
+  <div class="card">
+    <h3>Why Contractors Lose Money</h3>
+    <ul>
+      <li>Manual roof inspections slow down quoting</li>
+      <li>Roof climbing increases risk and insurance costs</li>
+      <li>Homeowners don’t trust estimates without visuals</li>
+      <li>Slow response time loses deals to competitors</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="section">
+  <div class="card">
+    <h3>The Fix: Skymaster X1</h3>
+    <ul>
+      <li>Instant 4K aerial roof capture</li>
+      <li>No ladder or roof climbing required</li>
+      <li>Visual proof builds homeowner trust</li>
+      <li>Faster inspections = more jobs per day</li>
+    </ul>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section">
+  <div class="card">
+    <h3>What You Get</h3>
+    <ul>
+      <li>Professional drone inspection system</li>
+      <li>High-resolution roofing workflow</li>
+      <li>Built for contractors and crews</li>
+      <li>Easy integration into your business</li>
+    </ul>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="section">
+  <div class="card">
+    <h3>Built for Real Contractors</h3>
+    <ul>
+      <li>Used for inspections and quoting workflows</li>
+      <li>Reduces inspection time instantly</li>
+      <li>Improves closing rate with visuals</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<!-- STICKY CTA -->
+<div class="sticky">
+  <a class="btn primary"
+     href="https://buy.stripe.com/9B6eV64qDcT20xpeDC2ZO0i"
+     onclick="go(this.href,'sticky_buy_click')">
+     Buy Skymaster X1 — $899
+  </a>
+</div>
+
+</body>
+</html>
